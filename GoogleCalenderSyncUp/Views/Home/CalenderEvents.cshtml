@@ -1,8 +1,37 @@
-﻿
+﻿@model GoogleCalenderSyncUp.Models.CalenderEventsViewModel
 @{
     ViewBag.Title = "CalenderEvents";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>CalenderEvents</h2>
+
+@*TODO create a button which will redirect to calender view again*@ 
+@Html.BeginForm("CalenderEvents","Home",new { getDataFromGoogleApi = true })
+
+@Html.Kendo().Button().Name("Refresh")
+
+@(Html.Kendo().Grid<GoogleCalenderSyncUp.Models.CalenderEventsViewModel>()
+    
+    .Columns(column =>
+{
+    column.Bound(e => e.AccessRole).Title("AccessRole");
+    column.Bound(e => e.Description).Title("Description");
+    column.Bound(e => e.ETag).Title("ETag");
+    column.Bound(e => e.Kind).Title("Kind");
+    column.Bound(e => e.NextPageToken).Title("NextPageToken");
+    column.Bound(e => e.NextSyncToken).Title("NextSyncToken");
+    column.Bound(e => e.Summary).Title("Summary");
+    column.Bound(e => e.TimeZone).Title("TimeZone");
+    column.Bound(e => e.Updated).Title("Updated");
+    column.Bound(e => e.UpdatedRaw).Title("UpdatedRaw");
+
+}).DataSource(
+    datasource=>datasource.Ajax().PageSize(10)
+    .Model(model=>model.Id(m=>m.UserName))
+    .Read(read=>read.Action("GetCalenderEvents", "Home"))
+)
+
+
+
 

@@ -11,6 +11,9 @@ using Microsoft.Owin.Security;
 using GoogleCalenderSyncUp.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 
+
+
+
 namespace GoogleCalenderSyncUp.Controllers
 {
     [Authorize]
@@ -85,7 +88,7 @@ namespace GoogleCalenderSyncUp.Controllers
                         ApplicationUser user = userManager.FindByName(model.Email);
                         if (user.IsGoogleConnected)
                         {
-                            return View("CalenderEvents","Home");
+                            return RedirectToAction("IndexAsync","Home",new { getDataFromGoogleApi=false});
                         }
                         else
                         {
@@ -494,6 +497,7 @@ namespace GoogleCalenderSyncUp.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
     }
+    #endregion
 }
